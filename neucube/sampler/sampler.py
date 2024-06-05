@@ -65,7 +65,7 @@ class MeanFiringRate(Sampler):
 
 import torch
 
-class TemporalBinning(Sampler):
+class Binning(Sampler):
     """
     Sampler that calculates the temporal binning from spike activity.
     """
@@ -103,6 +103,46 @@ class TemporalBinning(Sampler):
         binned_data = spike_activity.unfold(1, self.bin_size, self.bin_size).sum(dim=2)
         flat_binned = binned_data.view(binned_data.size(0), -1)        
         return flat_binned
+
+class TemporalBinning(Sampler):
+    """
+    Sampler that calculates the temporal binning from spike activity.
+    """
+
+    def __init__(self, bin_size=10):
+        """
+        Initializes the TemporalBinning sampler.
+
+        Parameters:
+            bin_size (int): Size of the bin (default: 10).
+        """
+        self.bin_size = bin_size
+
+    def sample(self, spike_activity):
+        """
+        Calculates the temporal binning from spike activity.
+
+        Parameters:
+            spike_activity (torch.Tensor): Spike activity tensor or array-like object.
+
+        Returns:
+            torch.Tensor: State vectors (temporal binning for each sample).
+        """
+        if not isinstance(spike_activity, torch.Tensor):
+            spike_activity = torch.tensor(spike_activity)
+
+        num_time_points = spike_activity.size(1)
+        remainder = num_time_points % self.bin_size
+
+        if remainder != 0:
+            padding = self.bin_size - remainder
+            spike_activity = torch.nn.functional.pad(spike_activity, (0, 0, 0, padding))  # Correct padding
+
+        reshaped = spike_activity.reshape(spike_activity.size(0), -1, self.bin_size, spike_activity.size(2))
+        binned_data = reshaped.sum(dim=2)
+
+        flat_binned = binned_data.view(binned_data.size(0), -1)
+
 
 class ISIstats(Sampler):
     """

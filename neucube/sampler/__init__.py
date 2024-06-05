@@ -1,1 +1,1 @@
-from .sampler import SpikeCount, DeSNN, MeanFiringRate, TemporalBinning, ISIstats
+from .sampler import SpikeCount, DeSNN, MeanFiringRate, Binning, TemporalBinning, ISIstats
