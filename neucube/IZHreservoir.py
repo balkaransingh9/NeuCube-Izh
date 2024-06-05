@@ -137,6 +137,24 @@ class IzhReservoir():
       self.c[self.inh_n] = c  
       self.d[self.inh_n] = d
   
+  def update_parms(self, a, b, c, d):
+      if not isinstance (a, torch.Tensor):
+        self.a = torch.tensor(a).to(self.device)
+      else:
+        self.a = a
+      if not isinstance (b, torch.Tensor):
+        self.b = torch.tensor(b).to(self.device)
+      else:
+        self.b = b
+      if not isinstance (c, torch.Tensor):
+        self.c = torch.tensor(c).to(self.device)
+      else:
+        self.c = c
+      if not isinstance (d, torch.Tensor):
+        self.d = torch.tensor(d).to(self.device)
+      else:
+        self.d = d
+
   def summary(self):
     """
     Prints a summary of the reservoir.
