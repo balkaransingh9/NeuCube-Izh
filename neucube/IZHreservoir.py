@@ -145,6 +145,6 @@ class IzhReservoir():
                 ["Reservoir connections", str(sum(sum(self.w_latent != 0)).item())],
                 ["Input connections", str(sum(sum(self.w_in != 0)).item())],
                 ["Device", str(self.device)],
-                #["Spectral Radius", str(torch.linalg.eigvals(self.w_latent).abs().max().item())],
+                ["Spectral Radius", str(torch.linalg.eigvals(self.w_latent).abs().max().item())],
                 ]
     print_summary(res_info)
