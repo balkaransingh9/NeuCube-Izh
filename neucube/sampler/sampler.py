@@ -142,6 +142,7 @@ class TemporalBinning(Sampler):
         binned_data = reshaped.sum(dim=2)
 
         flat_binned = binned_data.view(binned_data.size(0), -1)
+        return flat_binned
 
 
 class ISIstats(Sampler):
