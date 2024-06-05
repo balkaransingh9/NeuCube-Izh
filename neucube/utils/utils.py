@@ -65,3 +65,16 @@ def interpolate(_data_, num_points=52):
             samp[:, i] = arr_interpol
         data_interpol.append(samp)
     return torch.stack(data_interpol)
+
+def SeparationIndex(states, labels):
+    classes = labels.unique()
+    N = len(classes)
+    X_cl = []
+    for cl in classes:
+        X_cl.append(states[labels == cl])
+    c_means = torch.stack([i.mean(axis=0) for i in X_cl])
+    cd = torch.cdist(c_means, c_means, p=2)/N**2
+    mask = torch.triu(torch.ones_like(cd, dtype=torch.bool), diagonal=1)
+    cd = cd[mask].sum()
+    cv = torch.stack([torch.cdist(j.unsqueeze(0), i, p=2).sum()/N for i,j in zip(X_cl, c_means)]).sum()/N
+    return cd/(cv+1)

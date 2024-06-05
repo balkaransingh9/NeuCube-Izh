@@ -1,1 +1,1 @@
-from .utils import print_summary, SNR, interpolate
+from .utils import print_summary, SNR, interpolate, SeparationIndex
