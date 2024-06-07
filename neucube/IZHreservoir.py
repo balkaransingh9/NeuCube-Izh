@@ -139,7 +139,7 @@ class IzhReservoir():
   
   def update_parms(self, a, b, c, d):
       if not isinstance (a, torch.Tensor):
-        self.a = torch.tensor(a).to(self.device)
+        self.a = torch.tensor(a).to(dtype=torch.int).to(self.device)
       else:
         self.a = a
       if not isinstance (b, torch.Tensor):
@@ -147,11 +147,11 @@ class IzhReservoir():
       else:
         self.b = b
       if not isinstance (c, torch.Tensor):
-        self.c = torch.tensor(c).to(self.device)
+        self.c = torch.tensor(c).to(dtype=torch.int).to(self.device)
       else:
         self.c = c
       if not isinstance (d, torch.Tensor):
-        self.d = torch.tensor(d).to(self.device)
+        self.d = torch.tensor(d).to(dtype=torch.int).to(self.device)
       else:
         self.d = d
 
