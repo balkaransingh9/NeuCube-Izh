@@ -46,6 +46,7 @@ def SNR(Xin, yin):
     # Compute the SNR for each feature
     mean_diff = torch.max(means, dim=0).values - torch.min(means, dim=0).values
     std_sum = torch.sum(stds, dim=0)
+    std_sum[std_sum == 0] = float('inf')
     ratios = torch.abs(mean_diff) / std_sum
     
     return ratios
