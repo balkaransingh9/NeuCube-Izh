@@ -141,19 +141,19 @@ class IzhReservoir():
       if not isinstance (a, torch.Tensor):
         self.a = torch.tensor(a).to(self.device)
       else:
-        self.a = a
+        self.a = a.to(dtype=torch.float64).to(self.device)
       if not isinstance (b, torch.Tensor):
         self.b = torch.tensor(b).to(self.device)
       else:
-        self.b = b
+        self.b = b.to(dtype=torch.float64).to(self.device)
       if not isinstance (c, torch.Tensor):
         self.c = torch.tensor(c).to(dtype=torch.float64).to(self.device)
       else:
-        self.c = c
+        self.c = c.to(dtype=torch.float64).to(self.device)
       if not isinstance (d, torch.Tensor):
         self.d = torch.tensor(d).to(dtype=torch.float64).to(self.device)
       else:
-        self.d = d
+        self.d = d.to(dtype=torch.float64).to(self.device)
 
   def summary(self):
     """
