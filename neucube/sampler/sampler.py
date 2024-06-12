@@ -170,6 +170,7 @@ class ISIstats(Sampler):
         isi = torch.diff(sorted_spike_indices, dim=1)
         isi[isi == float('inf')] = float('nan')
         isi_mean = torch.nanmean(isi, dim=1)
+        isi_mean[torch.isnan(isi_mean)] = -1
         return isi_mean
     
 class DeSNN(Sampler):
