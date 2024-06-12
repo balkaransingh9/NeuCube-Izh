@@ -6,7 +6,7 @@ from .utils import print_summary
 from .training import STDP
 
 class Reservoir():
-  def __init__(self, cube_shape=(10,10,10), inputs=None, coordinates=None, mapping=None, c=0.4, l=0.169, c_in=0.9, l_in=1.2, use_mps=False):
+  def __init__(self, cube_shape=(10,10,10), inputs=None, coordinates=None, mapping=None, c=0.4, l=0.169, c_in=0.9, l_in=1.2, input_conn_prob=0.95, use_mps=False):
     """
     Initializes the reservoir object.
 
@@ -41,7 +41,7 @@ class Reservoir():
     conn_mat[:, inh_n] = -conn_mat[:, inh_n]
 
     if mapping is None:
-      input_conn = torch.where(torch.rand(self.n_neurons, inputs) > 0.95, torch.ones_like(torch.rand(self.n_neurons, inputs)), torch.zeros(self.n_neurons, inputs)) / 50
+      input_conn = torch.where(torch.rand(self.n_neurons, inputs) > input_conn_prob, torch.ones_like(torch.rand(self.n_neurons, inputs)), torch.zeros(self.n_neurons, inputs)) / 50
     else:
       dist_in = torch.cdist(coordinates, mapping, p=2)
       input_conn = small_world_connectivity(dist_in, c=c_in, l=l_in) / 50
