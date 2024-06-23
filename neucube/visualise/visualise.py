@@ -33,7 +33,7 @@ def spike_raster(spike_activity, fig_size=(10, 5)):
     plt.ylabel('Neuron Index')
     plt.show()
 
-def plot_connections(reservoir, exci_thres=0.002, inhi_thres=-0.003, fig_size=(10, 8)):
+def plot_connections(reservoir, exci_thres=0.002, inhi_thres=-0.003, fig_size=(10, 8), rotate=None):
     """
     Plot the connections within a NeuCube reservoir.
 
@@ -48,7 +48,7 @@ def plot_connections(reservoir, exci_thres=0.002, inhi_thres=-0.003, fig_size=(1
     """
 
     # Check if the input is a NeuCube Reservoir object
-    if not isinstance(reservoir, neucube.Reservoir):
+    if not isinstance(reservoir, neucube.IzhReservoir):
         raise ValueError('Input should be a NeuCube Reservoir object')
 
     exci_vis_conn = torch.where(reservoir.w_latent > exci_thres)
@@ -74,4 +74,8 @@ def plot_connections(reservoir, exci_thres=0.002, inhi_thres=-0.003, fig_size=(1
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
+
+    if rotate is not None:
+        ax.view_init(*rotate)
+
     plt.show()
