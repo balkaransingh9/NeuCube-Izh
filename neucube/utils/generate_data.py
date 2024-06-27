@@ -41,7 +41,7 @@ def generate_complex_trends(n_timesteps, n_features, trend_type='mixed', randomn
         else:
             raise ValueError("Unknown trend type. Choose from 'sin', 'exp', 'poly', or 'mixed'.")
         
-        trends[:, i] += randomness * np.random.randn(n_timesteps)
+        #trends[:, i] += randomness * np.random.randn(n_timesteps)
     
     return trends
 
