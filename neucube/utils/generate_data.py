@@ -1,5 +1,9 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
 def generate_complex_trends(n_timesteps, n_features, trend_type='mixed', randomness=0.1, seed=None):
     """
@@ -37,7 +41,6 @@ def generate_complex_trends(n_timesteps, n_features, trend_type='mixed', randomn
         else:
             raise ValueError("Unknown trend type. Choose from 'sin', 'exp', 'poly', or 'mixed'.")
         
-        # Add randomness to the trends
         trends[:, i] += randomness * np.random.randn(n_timesteps)
     
     return trends
@@ -62,7 +65,7 @@ def generate_longitudinal_data(n_samples=1000, n_timesteps=10, n_features=5, n_r
     if seed is not None:
         np.random.seed(seed)
     else:
-        np.random.seed(None)  # Set a random seed if not provided
+        np.random.seed(None)
 
     data = []
 
@@ -71,10 +74,11 @@ def generate_longitudinal_data(n_samples=1000, n_timesteps=10, n_features=5, n_r
         1: generate_complex_trends(n_timesteps, n_features, trend_type, randomness, seed)
     }
 
-    # Generate data for each sample
     for i in range(n_samples):
-        class_label = np.random.choice([0, 1])        
-        base_signal = np.random.randn(n_features)        
+        class_label = np.random.choice([0, 1])
+        
+        base_signal = np.random.randn(n_features)
+        
         class_offset = class_label * class_sep
         
         time_series = []
@@ -94,5 +98,5 @@ def generate_longitudinal_data(n_samples=1000, n_timesteps=10, n_features=5, n_r
         sample_data['sample_id'] = i
         data.append(sample_data)
 
-    data = pd.concat(data, ignore_index=True)
+    data = pd.concat(data, ignore_index=True)    
     return data
