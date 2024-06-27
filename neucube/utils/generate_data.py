@@ -18,7 +18,7 @@ def generate_complex_trends(n_timesteps, n_features, trend_type='mixed', randomn
     if seed is not None:
         np.random.seed(seed)
     else:
-        np.random.seed(None)  # Set a random seed if not provided
+        np.random.seed(None)
 
     time = np.linspace(0, 1, n_timesteps)
     trends = np.zeros((n_timesteps, n_features))
@@ -37,6 +37,7 @@ def generate_complex_trends(n_timesteps, n_features, trend_type='mixed', randomn
         else:
             raise ValueError("Unknown trend type. Choose from 'sin', 'exp', 'poly', or 'mixed'.")
         
+        # Add randomness to the trends
         trends[:, i] += randomness * np.random.randn(n_timesteps)
     
     return trends
@@ -61,26 +62,26 @@ def generate_longitudinal_data(n_samples=1000, n_timesteps=10, n_features=5, n_r
     if seed is not None:
         np.random.seed(seed)
     else:
-        np.random.seed(None)
+        np.random.seed(None)  # Set a random seed if not provided
 
     data = []
+
     class_trends = {
         0: generate_complex_trends(n_timesteps, n_features, trend_type, randomness, seed),
         1: generate_complex_trends(n_timesteps, n_features, trend_type, randomness, seed)
     }
 
+    # Generate data for each sample
     for i in range(n_samples):
-        class_label = np.random.choice([0, 1])
-        
-        base_signal = np.random.randn(n_features)
-        
+        class_label = np.random.choice([0, 1])        
+        base_signal = np.random.randn(n_features)        
         class_offset = class_label * class_sep
         
         time_series = []
 
         for t in range(n_timesteps):
             trend = class_trends[class_label][t, :]
-            noise = np.random.randn(n_features) * (1 - class_sep)
+            noise = np.random.randn(n_features) * randomness
             time_features = base_signal + class_offset + trend + noise
             
             redundant_features = np.random.randn(n_redundant_features)
@@ -93,5 +94,5 @@ def generate_longitudinal_data(n_samples=1000, n_timesteps=10, n_features=5, n_r
         sample_data['sample_id'] = i
         data.append(sample_data)
 
-    data = pd.concat(data, ignore_index=True)    
+    data = pd.concat(data, ignore_index=True)
     return data
